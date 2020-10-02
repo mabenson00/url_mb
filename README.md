@@ -18,4 +18,6 @@ Project Requirements:
 - The project should include a README file with instructions for running the web service and its tests. You should also use the README to provide context on choices made during development.
 - The project should be packaged as a zip file or submitted via a hosted git platform (Github, Gitlab, etc).
 
-rails g model link full_url:string slug:string
+
+Decisions:
+-URL Validation: I'm not going to automatically validate or fix URLs. Technically `espn.com` isn't a URL, but the browser would handle it and redirect you correctly. 
