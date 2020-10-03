@@ -1,10 +1,10 @@
 class LinksController < ApplicationController
 
   def redirect
-    if Link.find(Base62.decode(params[:slug]))
-      redirect_to Link.find(Base62.decode(params[:slug])).full_url
-    elsif
-      redirect_to Link.find_by(slug: params[:slug])
+    if REDIS.get(params[:slug])
+      redirect_to REDIS.get(params[:slug])
+    else
+      return json_response(params[:slug], 404)
     end
   end
   

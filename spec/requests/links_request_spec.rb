@@ -2,15 +2,16 @@ require 'rails_helper'
 require 'base62-rb'
 
 RSpec.describe "Links", type: :request do
-  let(:http_request) { post links_path(link_params)}
-  let(:link_params) { { full_url: link, slug: slug, expiration_days: expiration_days} }
-
-  # default is no specified expiration
-  let(:expiration_days) { nil }
-
-  before { http_request }
-
+  
   describe "create" do 
+    let(:http_request) { post links_path(link_params)}
+    let(:link_params) { { full_url: link, slug: slug, expiration_days: expiration_days} }
+
+    # default is no specified expiration
+    let(:expiration_days) { nil }
+
+    before { http_request }
+
     context "with link and slug, expiration days" do 
       let(:link) { "http://www.espn.com" }
       let(:slug) { "espn" }
@@ -63,5 +64,29 @@ RSpec.describe "Links", type: :request do
         expect(response).to have_http_status(400)
       end
     end
-  end 
+
+    describe "redirect" do
+      let(:link) { "http://www.espn.com" }
+      let(:slug) { "espn" }
+      let(:expiration_days) { 45 }
+      let(:create_request) { post links_path(link_params)}
+      let(:link_params) { { full_url: link, slug: slug, expiration_days: expiration_days} }
+      let(:redirect_request) { get redirect_path("espn") }
+
+  
+      it "redirects" do 
+        create_request
+        expect(redirect_request).to redirect_to(link)
+      end
+
+      context "when link not found" do 
+        let(:redirect_request) { get redirect_path("not_found") } 
+
+        it "responds with error" do 
+          redirect_request
+          expect(response).to have_http_status(404)
+        end
+      end
+    end
+  end
 end
