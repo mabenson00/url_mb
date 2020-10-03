@@ -24,6 +24,9 @@ gem 'validate_url'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'base62-rb'
+# for shortening urls
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -42,6 +45,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'rspec-rails'
+  gem 'rubocop'
 
   gem 'spring-watcher-listen', '~> 2.0.0'
 end

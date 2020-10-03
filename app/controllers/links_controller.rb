@@ -1,15 +1,16 @@
 class LinksController < ApplicationController
-    def get 
+  def create 
+    @link = Link.create!(link_params)
+    json_response(@link, :created)
+  end
 
-    end 
+  def destroy 
 
-    def create 
-        @link = Link.new(link_params)
-        @link.save
-        @link.short = Base62.encode(@link.id)    
-    end 
+  end
 
-    def destroy 
+  private 
 
-    end 
+  def link_params 
+    params.permit(:full_url, :slug)
+  end
 end
