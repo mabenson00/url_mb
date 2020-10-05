@@ -1,23 +1,19 @@
-URL Shortener: Back End
+# URL Backend
 
-Your task is to build the back end of a web service for shortening URLs. This will be an API service that a client would communicate with. The deliverable is the source code, written in Ruby, using whichever libraries, tools, database(s), and development methodologies you choose.
+## Set Up
+`bundle install` 
+`rake db:create && rake db:migrate`
+Download Redis from brew if you don't have it already.
+`brew services start redis`
 
-The requirements intentionally leave out many details. This is an opportunity for you to make decisions about the design of the service. What you leave out is just as important as what you include!
+## Tests
+`spec/requests/links_request_spec.rb`
+I created only the tests that were necessary to make sure my code worked. With no front-end, this was my way of testing.
 
-Product Requirements:
-
-- Clients should be able to create a shortened URL from a longer URL.
-- Clients should be able to specify a custom slug.
-- Clients should be able to expire / delete previous URLs.
-    - I'm going to skip delete because that'd require log-in or authorization of some sort.
-- Users should be able to open the URL and get redirected.
-
-Project Requirements:
-
-- The project should include an automated test suite.
-- The project should include a README file with instructions for running the web service and its tests. You should also use the README to provide context on choices made during development.
-- The project should be packaged as a zip file or submitted via a hosted git platform (Github, Gitlab, etc).
-
-
-Decisions:
--URL Validation: I'm not going to automatically validate or fix URLs. Technically `espn.com` isn't a URL, but the browser would handle it and redirect you correctly. 
+## Choices
+- The directions specified that you should be able to delete or expire files. I decided to go with expire to save time on coding, as deleting would require log-in or authorization token of some sort. I set a default of 30 days, if one wasn't specified
+- I used Redis for the expiration. I also used it for actually retrieving the URLs, because it's faster and auto implements the expiration. 
+	> I kept the information in the database as well, because having data == money. If that's not the case in this situation, I had implemented the validations etc in the db.
+- My research said the best way to shorten URLs was using Base62, so that's what I did when the slug isn't specified.
+- I thought about validating URLs, but it didn't seem like a good use of time. Theoretically, `espn.com` isn't a valid URL, however the browser will still redirect you correctly. 
+- Not knowing what the front-end would do, I put in basic JSON responses that should allow the front-end to display any useful data.

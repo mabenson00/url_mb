@@ -1,5 +1,4 @@
 class LinksController < ApplicationController
-
   def redirect
     if REDIS.get(params[:slug])
       redirect_to REDIS.get(params[:slug])
@@ -18,18 +17,10 @@ class LinksController < ApplicationController
       json_response(link, 400)
   end
 
-  def destroy 
-
-  end
-
   private 
 
   def expiration_seconds
-    if params[:expiration_days]
-      return params[:expiration_days].to_i*86400
-    else 
-      return nil 
-    end
+    return params[:expiration_days].to_i*86400 if params[:expiration_days]
   end 
 
   def link_params 

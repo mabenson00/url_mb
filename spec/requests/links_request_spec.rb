@@ -24,8 +24,8 @@ RSpec.describe "Links", type: :request do
       end
 
       it "creates returns correct info from redis" do 
-          expect(REDIS.get(slug)).to eq(link)
-          expect(REDIS.TTL(slug)).to eq(45*86400)
+        expect(REDIS.get(slug)).to eq(link)
+        expect(REDIS.TTL(slug)).to eq(45*86400)
       end 
     end
 
@@ -73,7 +73,6 @@ RSpec.describe "Links", type: :request do
       let(:link_params) { { full_url: link, slug: slug, expiration_days: expiration_days} }
       let(:redirect_request) { get redirect_path("espn") }
 
-  
       it "redirects" do 
         create_request
         expect(redirect_request).to redirect_to(link)
